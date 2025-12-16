@@ -14,7 +14,6 @@ public class Contact {
     public Contact(String firstName, String lastName, String address,
                    String city, String state, String zip,
                    String phoneNumber, String email) {
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -25,9 +24,10 @@ public class Contact {
         this.email = email;
     }
 
-    public void display() {
-        System.out.println(firstName + " " + lastName + " | " +
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " | " +
                 address + ", " + city + ", " + state + " | " +
-                zip + " | " + phoneNumber + " | " + email);
+                zip + " | " + phoneNumber + " | " + email;
     }
 }

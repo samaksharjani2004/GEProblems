@@ -1,74 +1,130 @@
 package AddressBook;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class AddressBookMain {
 
-    // UC-6: Dictionary of Address Books
-    static Map<String, ArrayList<Contact>> addressBookSystem = new HashMap<>();
     static Scanner sc = new Scanner(System.in);
+
+    // UC-6: Dictionary of AddressBookName → List of Contacts
+    static Map<String, ArrayList<Contact>> addressBookSystem = new HashMap<>();
 
     public static void main(String[] args) {
 
         System.out.println("Welcome to Address Book Program");
 
-        System.out.println("Enter Address Book Name:");
-        String addressBookName = sc.nextLine();
+        boolean exit = false;
 
-        // Create new Address Book
-        addressBookSystem.put(addressBookName, new ArrayList<>());
+        while (!exit) {
+            System.out.println("\n1. Add Address Book");
+            System.out.println("2. Add Contact");
+            System.out.println("3. Display Address Book");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
 
-        System.out.println("Address Book '" + addressBookName + "' created.");
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
 
-        addContact(addressBookName);
-        displayAddressBook(addressBookName);
+            switch (choice) {
+
+                case 1:
+                    createAddressBook();
+                    break;
+
+                case 2:
+                    addContactToAddressBook();
+                    break;
+
+                case 3:
+                    displayAddressBook();
+                    break;
+
+                case 4:
+                    exit = true;
+                    System.out.println("Exiting Address Book Program");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
     }
 
-    // Add Contact to a specific Address Book
-    public static void addContact(String addressBookName) {
+    // UC-6: Create Address Book
+    static void createAddressBook() {
+        System.out.print("Enter Address Book Name: ");
+        String name = sc.nextLine();
 
-        System.out.println("Enter First Name:");
+        if (addressBookSystem.containsKey(name)) {
+            System.out.println("Address Book already exists!");
+        } else {
+            addressBookSystem.put(name, new ArrayList<>());
+            System.out.println("Address Book '" + name + "' created.");
+        }
+    }
+
+    // UC-1 extended for UC-6
+    static void addContactToAddressBook() {
+        System.out.print("Enter Address Book Name: ");
+        String bookName = sc.nextLine();
+
+        if (!addressBookSystem.containsKey(bookName)) {
+            System.out.println("Address Book does not exist!");
+            return;
+        }
+
+        System.out.print("Enter First Name: ");
         String firstName = sc.nextLine();
 
-        System.out.println("Enter Last Name:");
+        System.out.print("Enter Last Name: ");
         String lastName = sc.nextLine();
 
-        System.out.println("Enter Address:");
+        System.out.print("Enter Address: ");
         String address = sc.nextLine();
 
-        System.out.println("Enter City:");
+        System.out.print("Enter City: ");
         String city = sc.nextLine();
 
-        System.out.println("Enter State:");
+        System.out.print("Enter State: ");
         String state = sc.nextLine();
 
-        System.out.println("Enter Zip:");
+        System.out.print("Enter Zip: ");
         String zip = sc.nextLine();
 
-        System.out.println("Enter Phone Number:");
+        System.out.print("Enter Phone Number: ");
         String phone = sc.nextLine();
 
-        System.out.println("Enter Email:");
+        System.out.print("Enter Email: ");
         String email = sc.nextLine();
 
         Contact contact = new Contact(firstName, lastName, address,
                 city, state, zip, phone, email);
 
-        addressBookSystem.get(addressBookName).add(contact);
+        addressBookSystem.get(bookName).add(contact);
 
-        System.out.println("Contact added to Address Book: " + addressBookName);
+        System.out.println("Contact added to Address Book: " + bookName);
     }
 
-    // Display contacts of a specific Address Book
-    public static void displayAddressBook(String addressBookName) {
+    // Display contacts
+    static void displayAddressBook() {
+        System.out.print("Enter Address Book Name: ");
+        String bookName = sc.nextLine();
 
-        System.out.println("\nContacts in Address Book: " + addressBookName);
+        if (!addressBookSystem.containsKey(bookName)) {
+            System.out.println("Address Book does not exist!");
+            return;
+        }
 
-        for (Contact c : addressBookSystem.get(addressBookName)) {
-            c.display();
+        System.out.println("\nContacts in Address Book: " + bookName);
+
+        ArrayList<Contact> contacts = addressBookSystem.get(bookName);
+
+        if (contacts.isEmpty()) {
+            System.out.println("No contacts found.");
+        } else {
+            for (Contact c : contacts) {
+                System.out.println(c);
+            }
         }
     }
 }
