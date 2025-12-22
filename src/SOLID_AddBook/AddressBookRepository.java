@@ -1,4 +1,5 @@
 package SOLID_AddBook;
 
-public class AddressBookRepository {
+public interface AddressBookRepository {
+    void save (AddressBook addressBook);
 }
